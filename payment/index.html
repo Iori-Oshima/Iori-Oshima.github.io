@@ -1,43 +1,264 @@
 <!DOCTYPE html>
 <html lang="ja">
-  <head>
-    <meta charset="UTF-8" />
-    <title>送金手段</title>
-  </head>
-  <body>
-    <h1>送金手段</h1>
 
-    <p>
-      三井住友銀行<br />
-      支店名: 仙台支店<br />
-      支店番号: 311<br />
-      口座番号: 2615767
-    </p>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>送金手段</title>
+  <style>
+    :root {
+      --primary-color: #2c3e50;
+      --bg-color: #f8f9fa;
+      --card-bg: #ffffff;
+      --text-main: #333333;
+      --text-sub: #666666;
+      --border-color: #e0e0e0;
+      --accent-color: #3498db;
+    }
 
-    <p>
-      三菱UFJ銀行<br />
-      支店名: 本店<br />
-      支店番号: 001<br />
-      口座番号: 2902958
-    </p>
+    body {
+      font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      line-height: 1.6;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+    }
 
-    <p>
-      楽天銀行<br />
-      支店名: テナー支店<br />
-      支店番号: 241<br />
-      口座番号: 3414159
-    </p>
+    .container {
+      max-width: 600px;
+      width: 100%;
+    }
 
-    <p>
-      ソニー銀行<br />
-      支店名: 本店営業部<br />
-      支店番号: 001<br />
-      口座番号: 6270153
-    </p>
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
 
-    <p>
-      PayPay<br />
-      ID: oota_nikukuitee
-    </p>
-  </body>
+    h1 {
+      font-size: 1.5rem;
+      color: var(--primary-color);
+      margin-bottom: 10px;
+      border-bottom: 2px solid var(--accent-color);
+      display: inline-block;
+      padding-bottom: 5px;
+    }
+
+    .notice {
+      font-size: 0.9rem;
+      color: var(--text-sub);
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .card-grid {
+      display: grid;
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--border-color);
+      transition: transform 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .bank-name {
+      font-weight: bold;
+      font-size: 1.1rem;
+      color: var(--primary-color);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      border-left: 4px solid var(--accent-color);
+      padding-left: 10px;
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 4px 0;
+      border-bottom: 1px dashed #eee;
+    }
+
+    .info-row:last-child {
+      border-bottom: none;
+    }
+
+    .label {
+      color: var(--text-sub);
+      font-size: 0.85rem;
+      flex-shrink: 0;
+      width: 80px;
+    }
+
+    .value {
+      font-family: "SF Mono", "Monaco", "Inconsolata", monospace;
+      font-weight: 500;
+      color: var(--text-main);
+      text-align: right;
+      word-break: break-all;
+    }
+
+    .copy-btn {
+      background: none;
+      border: 1px solid var(--accent-color);
+      color: var(--accent-color);
+      border-radius: 4px;
+      padding: 2px 8px;
+      font-size: 0.7rem;
+      cursor: pointer;
+      margin-left: 8px;
+      transition: all 0.2s;
+    }
+
+    .copy-btn:hover {
+      background: var(--accent-color);
+      color: white;
+    }
+
+    /* Bank specific colors */
+    .smbc {
+      --accent-color: #00a031;
+    }
+
+    .mufg {
+      --accent-color: #d6000f;
+    }
+
+    .rakuten {
+      --accent-color: #bf0000;
+    }
+
+    .sony {
+      --accent-color: #004289;
+    }
+
+    .paypay {
+      --accent-color: #ff0033;
+    }
+
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--text-sub);
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 15px;
+      }
+
+      .card {
+        padding: 15px;
+      }
+
+      h1 {
+        font-size: 1.3rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <h1>送金手段</h1>
+    </header>
+
+    <div class="card-grid">
+      <!-- 三井住友銀行 -->
+      <div class="card smbc">
+        <div class="bank-name">三井住友銀行</div>
+        <div class="info-row">
+          <span class="label">支店名</span>
+          <span class="value">仙台支店</span>
+        </div>
+        <div class="info-row">
+          <span class="label">支店番号</span>
+          <span class="value">311</span>
+        </div>
+        <div class="info-row">
+          <span class="label">口座番号</span>
+          <span class="value">2615767</span>
+        </div>
+      </div>
+
+      <!-- 三菱UFJ銀行 -->
+      <div class="card mufg">
+        <div class="bank-name">三菱UFJ銀行</div>
+        <div class="info-row">
+          <span class="label">支店名</span>
+          <span class="value">本店</span>
+        </div>
+        <div class="info-row">
+          <span class="label">支店番号</span>
+          <span class="value">001</span>
+        </div>
+        <div class="info-row">
+          <span class="label">口座番号</span>
+          <span class="value">2902958</span>
+        </div>
+      </div>
+
+      <!-- 楽天銀行 -->
+      <div class="card rakuten">
+        <div class="bank-name">楽天銀行</div>
+        <div class="info-row">
+          <span class="label">支店名</span>
+          <span class="value">テナー支店</span>
+        </div>
+        <div class="info-row">
+          <span class="label">支店番号</span>
+          <span class="value">241</span>
+        </div>
+        <div class="info-row">
+          <span class="label">口座番号</span>
+          <span class="value">3414159</span>
+        </div>
+      </div>
+
+      <!-- ソニー銀行 -->
+      <div class="card sony">
+        <div class="bank-name">ソニー銀行</div>
+        <div class="info-row">
+          <span class="label">支店名</span>
+          <span class="value">本店営業部</span>
+        </div>
+        <div class="info-row">
+          <span class="label">支店番号</span>
+          <span class="value">001</span>
+        </div>
+        <div class="info-row">
+          <span class="label">口座番号</span>
+          <span class="value">6270153</span>
+        </div>
+      </div>
+
+      <!-- PayPay -->
+      <div class="card paypay">
+        <div class="bank-name">PayPay</div>
+        <div class="info-row">
+          <span class="label">ID</span>
+          <span class="value">oota_nikukuitee</span>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p>&copy; 2026 Payment Info</p>
+    </footer>
+  </div>
+</body>
+
 </html>
