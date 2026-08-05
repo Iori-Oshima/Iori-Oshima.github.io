@@ -62,6 +62,9 @@
         <div class="lantern lantern--r" data-lantern></div>
         <div class="lantern lantern--l" data-lantern></div>
         <div class="lantern lantern--r" data-lantern></div>
+        <!-- 参道の途中に一体。説明はしない -->
+        <img class="machibito" src="images/mayo/08-waiting.png" alt="" aria-hidden="true"
+          loading="lazy" width="480" height="415" />
       </div>
     </section>
 
@@ -204,11 +207,49 @@
     <section class="section section--oracle" id="shintaku" hidden>
       <h2 class="midashi">神託</h2>
       <div class="oracle" aria-live="polite">
+        <img class="oracle__fig" id="oracle-fig" src="" alt="" width="480" height="415" hidden />
         <p class="oracle__ke" id="oracle-ke"></p>
         <p class="oracle__kotoba" id="oracle-kotoba"></p>
         <p class="oracle__chu" id="oracle-chu"></p>
       </div>
       <button class="quiet-btn" id="reworship" type="button">もう一度参拝する</button>
+    </section>
+
+    <!-- ─────────────── 二つの道 ─────────────── -->
+    <section class="section section--michi" id="michi">
+      <h2 class="midashi reveal">二つの道</h2>
+      <p class="lead reveal">当社には、古くより二つの道がある。</p>
+
+      <div class="michi reveal">
+        <button class="michi__side" type="button" data-michi="white">
+          <img src="images/mayo/10-mayo-ism.png" loading="lazy" width="480" height="415"
+            alt="掲げたポテトへ白を垂らす" />
+          <span class="michi__name">白の道</span>
+          <span class="michi__gloss">掛けて食む</span>
+        </button>
+
+        <!-- 二つの道のあいだに、かつての争いを置く -->
+        <figure class="michi__arasoi">
+          <img class="arasoi" src="images/mayo/12-fighting.png" loading="lazy"
+            width="480" height="415" alt="ポテトを手に斬り結ぶ二柱" />
+          <figcaption>かつて二派は、<br />皿の上で永く争った。</figcaption>
+        </figure>
+
+        <button class="michi__side" type="button" data-michi="red">
+          <img src="images/mayo/11-ketchup-ism.png" loading="lazy" width="480" height="415"
+            alt="掲げたポテトの先を赤に浸す" />
+          <span class="michi__name">赤の道</span>
+          <span class="michi__gloss">浸して食む</span>
+        </button>
+      </div>
+
+      <p class="michi__prompt" id="michi-prompt">いずれかを選んでください。</p>
+
+      <div class="michi__after" id="michi-after" hidden>
+        <p class="michi__result" id="michi-result"></p>
+        <p class="michi__kotoba" id="michi-kotoba"></p>
+        <p class="note note--dim">—— もっとも、当社の御祭神は二柱である。</p>
+      </div>
     </section>
 
     <!-- ─────────────── 賽銭 ─────────────── -->
@@ -241,8 +282,11 @@
       </div>
 
       <div class="saisen__after" id="saisen-after" hidden>
+        <img class="orei" src="images/mayo/04-love.png" loading="lazy" width="480" height="415"
+          alt="LOVE の文字を掲げる赤實之命" />
         <p class="lead">御縁がありました。</p>
-        <a class="torii-link" href="payment/">奉納の手続きへ</a>
+        <!-- ディレクトリ指定だと file:// で開いた時に index.html が開かれないため、明示する -->
+        <a class="torii-link" href="payment/index.html">奉納の手続きへ</a>
         <p class="note note--dim">※ 当社の賽銭箱は、実在の口座に通じています。</p>
       </div>
     </section>
@@ -259,6 +303,7 @@
             <div><dt>来社</dt><dd><span id="rec-visit">0</span> 度</dd></div>
             <div><dt>参拝</dt><dd><span id="rec-worship">0</span> 度</dd></div>
             <div><dt>献灯</dt><dd><span id="rec-light">0</span> 灯</dd></div>
+            <div><dt>道</dt><dd id="rec-michi">—</dd></div>
             <div><dt>初参</dt><dd id="rec-first">—</dd></div>
           </dl>
           <span class="shuin__seal" aria-hidden="true">和合</span>
