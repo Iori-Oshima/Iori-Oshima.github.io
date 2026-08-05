@@ -1,0 +1,195 @@
+@charset "UTF-8";
+
+/* ══════════════════════════════════════════
+   和合神社 社務所 — 奉納の手続き
+   本殿（assets/style.css）とは独立して読み込む
+   ══════════════════════════════════════════ */
+
+:root {
+  --ink:        #070706;
+  --paper:      #e8e0d1;
+  --paper-dim:  #a89e8d;
+  --paper-far:  #7b7365;
+  --mayo:       #f2e7bd;
+  --ketchup:    #b02a22;
+  --line:       #241f19;
+
+  --serif: "Hiragino Mincho ProN", "HiraMinProN-W3", "Yu Mincho", YuMincho,
+           "Noto Serif JP", "Sawarabi Mincho", "MS PMincho", serif;
+
+  --ease: cubic-bezier(.25, .8, .3, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--ink);
+  color: var(--paper-dim);
+  font-family: var(--serif);
+  font-size: 15px;
+  line-height: 2;
+  letter-spacing: .12em;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 本殿と同じ、底からの淡い温度 */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(120% 60% at 50% 0%,   rgba(60, 44, 26, .26), transparent 62%),
+    radial-gradient(90%  50% at 50% 100%, rgba(52, 20, 16, .18), transparent 64%);
+  pointer-events: none;
+}
+
+.sheet {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 12vh 6vw 14vh;
+}
+
+/* ── 頭 ────────────────────────────────── */
+
+.sheet__head { text-align: center; }
+
+.sheet__over {
+  margin: 0;
+  font-size: .7rem;
+  letter-spacing: .5em;
+  text-indent: .5em;
+  color: var(--paper-far);
+}
+
+.sheet__title {
+  margin: 1.4rem 0 0;
+  font-size: clamp(1.3rem, 5vw, 1.7rem);
+  font-weight: 400;
+  letter-spacing: .5em;
+  text-indent: .5em;
+  color: var(--paper);
+}
+
+.sheet__note {
+  margin: 1.1rem 0 0;
+  font-size: .78rem;
+  letter-spacing: .18em;
+  color: var(--paper-far);
+  text-align: center;
+}
+
+/* 罫は見出しのひとまとまりを締める位置に置く */
+.sheet__head::after {
+  content: "";
+  display: block;
+  width: 1px;
+  height: 2.4rem;
+  margin: 2rem auto 0;
+  background: linear-gradient(to bottom, #4a453d, transparent);
+}
+
+/* ── 口座 ──────────────────────────────── */
+
+.accounts {
+  margin: 3rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.4rem;
+}
+
+.account {
+  padding: 1.8rem 1.7rem;
+  background: linear-gradient(158deg, #14110d, #0d0b09);
+  border: 1px solid var(--line);
+  transition: border-color .8s var(--ease);
+}
+
+.account:hover { border-color: #3a322a; }
+
+.account__name {
+  margin: 0 0 1.4rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--line);
+  font-size: .98rem;
+  font-weight: 400;
+  letter-spacing: .22em;
+  color: var(--mayo);
+}
+
+.account__body {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: .7rem;
+}
+
+.account__body > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.2rem;
+}
+
+.account__body dt {
+  flex: none;
+  font-size: .76rem;
+  letter-spacing: .14em;
+  color: var(--paper-far);
+}
+
+.account__body dd {
+  margin: 0;
+  text-align: right;
+  font-size: .92rem;
+  color: var(--paper);
+  overflow-wrap: anywhere;
+}
+
+/* 番号は桁が揃って読めることを最優先する */
+.num {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: .2em;
+  /* 末尾の字間ぶん右に空くのを打ち消す */
+  margin-right: -.2em;
+}
+
+/* ── 戻り ──────────────────────────────── */
+
+.back-wrap { margin-top: 4.5rem; text-align: center; }
+
+.back {
+  display: inline-block;
+  padding: 1em 2.6em;
+  border: 1px solid #3b3128;
+  color: var(--paper-dim);
+  font-size: .8rem;
+  letter-spacing: .3em;
+  text-indent: .3em;
+  text-decoration: none;
+  transition: color .8s var(--ease), border-color .8s var(--ease), background .8s var(--ease);
+}
+
+.back:hover, .back:focus-visible {
+  color: var(--mayo);
+  border-color: #55462d;
+  background: rgba(255, 178, 87, .05);
+}
+
+:focus-visible { outline: 1px solid var(--paper-far); outline-offset: 4px; }
+
+/* ── 小さな画面 ────────────────────────── */
+
+@media (max-width: 560px) {
+  .sheet { padding: 8vh 6vw 12vh; }
+  .accounts { margin-top: 2.4rem; gap: 1.1rem; }
+  .account { padding: 1.5rem 1.3rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition-duration: .001ms !important; }
+}
