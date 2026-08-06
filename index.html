@@ -1,7 +1,348 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
+  <title>和合神社</title>
+  <meta name="description" content="白油之命と赤實之命の二柱を祀る。参拝、献灯、神託。" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="和合神社" />
+  <meta property="og:description" content="白油之命と赤實之命の二柱を祀る。参拝、献灯、神託。" />
+  <meta property="og:url" content="https://iori-oshima.github.io/" />
+  <meta property="og:image" content="https://iori-oshima.github.io/images/mayo_fusion.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="images/mayo_fusion.png" />
+  <link rel="apple-touch-icon" href="images/mayo_fusion.png" />
+  <link rel="stylesheet" href="assets/style.css" />
+  <script>document.documentElement.classList.add('js');</script>
 </head>
+
+<body>
+  <canvas id="lights-canvas" aria-hidden="true"></canvas>
+
+  <main>
+
+    <!-- ─────────────── 序 ─────────────── -->
+    <section class="section section--hero" id="jo">
+      <div class="hero">
+        <svg class="torii" viewBox="0 0 400 330" aria-hidden="true">
+          <g class="torii__g">
+            <path class="torii__wood" d="M56 44 Q200 62 344 44 L344 66 Q200 84 56 66 Z" />
+            <path class="torii__wood" d="M74 70 Q200 87 326 70 L326 88 Q200 105 74 88 Z" />
+            <rect class="torii__wood" x="88" y="150" width="224" height="15" />
+            <rect class="torii__wood" x="191" y="88" width="18" height="62" />
+            <path class="torii__wood" d="M113.5 88 L128.5 88 L126.5 314 L105.5 314 Z" />
+            <path class="torii__wood" d="M271.5 88 L286.5 88 L294.5 314 L273.5 314 Z" />
+            <ellipse class="torii__base" cx="116" cy="316" rx="19" ry="5" />
+            <ellipse class="torii__base" cx="284" cy="316" rx="19" ry="5" />
+          </g>
+        </svg>
+
+        <h1 class="shago" aria-label="和合神社">和合神社</h1>
+        <p class="hero__sub">白油之命 ・ 赤實之命</p>
+
+        <div class="hero__cue" aria-hidden="true">
+          <span class="hero__cue-line"></span>
+          <span class="hero__cue-text">参道へ</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────────── 参道 ─────────────── -->
+    <section class="section section--sando" id="sando">
+      <p class="lead reveal">灯籠が、あなたの歩みにあわせて灯ります。</p>
+
+      <div class="sando">
+        <div class="sando__path" aria-hidden="true"></div>
+        <div class="lantern lantern--l" data-lantern></div>
+        <div class="lantern lantern--r" data-lantern></div>
+        <div class="lantern lantern--l" data-lantern></div>
+        <div class="lantern lantern--r" data-lantern></div>
+        <div class="lantern lantern--l" data-lantern></div>
+        <div class="lantern lantern--r" data-lantern></div>
+        <!-- 参道の途中に一体。説明はしない -->
+        <img class="machibito" src="images/mayo/08-waiting.png" alt="" aria-hidden="true"
+          loading="lazy" width="480" height="415" />
+      </div>
+    </section>
+
+    <!-- ─────────────── 手水舎 ─────────────── -->
+    <section class="section" id="temizu">
+      <h2 class="midashi reveal">手水舎</h2>
+      <p class="lead reveal">まず、手を清めます。</p>
+
+      <div class="temizu reveal">
+        <button class="temizu__basin" id="temizu-basin" type="button"
+          aria-describedby="temizu-note">
+          <svg viewBox="0 0 260 200" aria-hidden="true">
+            <!-- 柱 -->
+            <path class="take" d="M22 26 L38 26 L38 186 L22 186 Z" />
+            <line class="take-line" x1="22" y1="74" x2="38" y2="74" />
+            <line class="take-line" x1="22" y1="130" x2="38" y2="130" />
+            <!-- 竹の樋 -->
+            <path class="take" d="M28 42 L128 42 L128 58 L28 58 Z" />
+            <path class="take" d="M128 42 L146 50 L146 64 L128 58 Z" />
+            <line class="take-line" x1="66" y1="42" x2="66" y2="58" />
+            <line class="take-line" x1="98" y1="42" x2="98" y2="58" />
+            <!-- 水盤 -->
+            <path class="suiban" d="M76 128 L212 128 L198 184 L90 184 Z" />
+            <ellipse class="suiban-rim" cx="144" cy="128" rx="68" ry="15" />
+            <!-- 水面 -->
+            <ellipse class="mizu" cx="144" cy="130" rx="57" ry="11" />
+            <!-- 清めの進み。水縁をなぞる -->
+            <ellipse class="ring-bg" cx="144" cy="130" rx="57" ry="11" />
+            <ellipse class="ring-fg" id="temizu-ring" cx="144" cy="130" rx="57" ry="11" />
+            <!-- 落ちる水 -->
+            <rect class="stream" x="134" y="60" width="5" height="64" rx="2.5" />
+          </svg>
+          <span class="visually-hidden">長押しして手を清める</span>
+        </button>
+      </div>
+
+      <p class="note reveal" id="temizu-note">水盤を押したままにしてください。</p>
+      <p class="note note--done" id="temizu-done" hidden>清めました。</p>
+    </section>
+
+    <!-- ─────────────── 拝殿 ─────────────── -->
+    <section class="section section--haiden" id="haiden">
+      <h2 class="midashi reveal">拝殿</h2>
+
+      <div class="haiden reveal">
+        <!-- 注連縄 -->
+        <div class="shimenawa" aria-hidden="true">
+          <svg class="shimenawa__rope" viewBox="0 0 480 46" preserveAspectRatio="none">
+            <path class="nawa" d="M8 30 Q240 4 472 30 L472 42 Q240 18 8 42 Z" />
+            <g class="nawa-line">
+              <path d="M30 27 Q46 16 62 25" />
+              <path d="M86 22 Q102 12 118 20" />
+              <path d="M142 18 Q158 9 174 16" />
+              <path d="M198 15 Q214 7 230 13" />
+              <path d="M254 13 Q270 7 286 15" />
+              <path d="M310 16 Q326 9 342 18" />
+              <path d="M366 20 Q382 12 398 22" />
+              <path d="M422 25 Q438 16 454 27" />
+            </g>
+          </svg>
+          <span class="shide" style="left:16%"></span>
+          <span class="shide" style="left:38%"></span>
+          <span class="shide" style="left:62%"></span>
+          <span class="shide" style="left:84%"></span>
+        </div>
+
+        <!-- 御神体と帳 -->
+        <div class="miya">
+          <div class="miya__inner">
+            <img class="goshintai" id="goshintai" src="images/mayo_fusion.png"
+              alt="手を取り合い、融合しつつある白と赤の二柱" width="1100" height="960" />
+          </div>
+          <button class="tobari" id="tobari" type="button">
+            <span class="tobari__half tobari__half--l"></span>
+            <span class="tobari__half tobari__half--r"></span>
+            <span class="tobari__label">帳に触れる</span>
+          </button>
+        </div>
+      </div>
+
+      <p class="note reveal" id="haiden-note">帳の向こうに、二柱がおられます。</p>
+
+      <div class="kento" id="kento" hidden>
+        <p class="note">闇に触れるたび、灯が一つ献じられます。</p>
+        <p class="note note--dim"><span id="kento-count">0</span> 灯</p>
+      </div>
+    </section>
+
+    <!-- ─────────────── 参拝 ─────────────── -->
+    <section class="section" id="sanpai">
+      <h2 class="midashi reveal">参拝の作法</h2>
+
+      <div class="sahou reveal">
+        <p class="sahou__name">二振二拍一垂</p>
+        <ol class="sahou__list">
+          <li data-step="furi"><span class="sahou__n">一</span>神器を二たび振り<span class="sahou__dots"><i></i><i></i></span></li>
+          <li data-step="haku"><span class="sahou__n">二</span>二たび拍ち<span class="sahou__dots"><i></i><i></i></span></li>
+          <li data-step="tare"><span class="sahou__n">三</span>一たび垂らす<span class="sahou__dots"><i></i></span></li>
+        </ol>
+      </div>
+
+      <div class="ritual reveal" id="ritual">
+        <div class="ritual__stage">
+          <button class="jingi" id="jingi" type="button" aria-describedby="ritual-guide">
+            <svg viewBox="0 0 90 172" aria-hidden="true">
+              <defs>
+                <!-- 白から赤へ、境を持たずに移る。和合そのもの -->
+                <linearGradient id="binGrad" x1="0.05" y1="0.08" x2="0.95" y2="0.88">
+                  <stop offset="0%" stop-color="#f5ecc6" />
+                  <stop offset="30%" stop-color="#ecdfae" />
+                  <stop offset="50%" stop-color="#d98a5e" />
+                  <stop offset="72%" stop-color="#bd3c2c" />
+                  <stop offset="100%" stop-color="#8d1e17" />
+                </linearGradient>
+              </defs>
+              <rect class="bin-cap" x="38" y="0" width="14" height="8" rx="2" />
+              <rect class="bin-cap" x="31" y="8" width="28" height="14" rx="3" />
+              <rect class="bin-neck" x="32" y="22" width="26" height="9" />
+              <path class="bin-body" d="M32 31 C30 45 12 58 11 92 C10 130 20 166 45 166 C70 166 80 130 79 92 C78 58 60 45 58 31 Z" />
+              <ellipse class="bin-shine" cx="26" cy="86" rx="5" ry="24" />
+            </svg>
+            <span class="visually-hidden">神器を振る</span>
+          </button>
+
+          <div class="sara" id="sara" aria-hidden="true">
+            <span class="drop" id="drop"></span>
+            <svg viewBox="0 0 220 54">
+              <ellipse class="sara-body" cx="110" cy="28" rx="98" ry="22" />
+              <ellipse class="sara-well" cx="110" cy="26" rx="76" ry="15" />
+            </svg>
+            <span class="pool" id="pool"></span>
+          </div>
+        </div>
+
+        <p class="ritual__guide" id="ritual-guide">神器を左右に振ってください。</p>
+      </div>
+    </section>
+
+    <!-- ─────────────── 神託 ─────────────── -->
+    <section class="section section--oracle" id="shintaku" hidden>
+      <h2 class="midashi">神託</h2>
+      <div class="oracle" aria-live="polite">
+        <img class="oracle__fig" id="oracle-fig" src="" alt="" width="480" height="415" hidden />
+        <p class="oracle__ke" id="oracle-ke"></p>
+        <p class="oracle__kotoba" id="oracle-kotoba"></p>
+        <p class="oracle__chu" id="oracle-chu"></p>
+      </div>
+      <button class="quiet-btn" id="reworship" type="button">もう一度参拝する</button>
+    </section>
+
+    <!-- ─────────────── 二つの道 ─────────────── -->
+    <section class="section section--michi" id="michi">
+      <h2 class="midashi reveal">二つの道</h2>
+      <p class="lead reveal">当社には、古くより二つの道がある。</p>
+
+      <div class="michi reveal">
+        <button class="michi__side" type="button" data-michi="white">
+          <img src="images/mayo/10-mayo-ism.png" loading="lazy" width="480" height="415"
+            alt="掲げたポテトへ白を垂らす" />
+          <span class="michi__name">白の道</span>
+          <span class="michi__gloss">掛けて食む</span>
+        </button>
+
+        <!-- 二つの道のあいだに、かつての争いを置く -->
+        <figure class="michi__arasoi">
+          <img class="arasoi" src="images/mayo/12-fighting.png" loading="lazy"
+            width="480" height="415" alt="ポテトを手に斬り結ぶ二柱" />
+          <figcaption>かつて二派は、<br />皿の上で永く争った。</figcaption>
+        </figure>
+
+        <button class="michi__side" type="button" data-michi="red">
+          <img src="images/mayo/11-ketchup-ism.png" loading="lazy" width="480" height="415"
+            alt="掲げたポテトの先を赤に浸す" />
+          <span class="michi__name">赤の道</span>
+          <span class="michi__gloss">浸して食む</span>
+        </button>
+      </div>
+
+      <p class="michi__prompt" id="michi-prompt">いずれかを選んでください。</p>
+
+      <div class="michi__after" id="michi-after" hidden>
+        <p class="michi__result" id="michi-result"></p>
+        <p class="michi__kotoba" id="michi-kotoba"></p>
+        <p class="note note--dim">—— もっとも、当社の御祭神は二柱である。</p>
+      </div>
+    </section>
+
+    <!-- ─────────────── 賽銭 ─────────────── -->
+    <section class="section" id="saisen">
+      <h2 class="midashi reveal">賽銭箱</h2>
+      <p class="lead reveal">五円を投じると、御縁が生ずる。</p>
+
+      <div class="saisen reveal">
+        <button class="saisenbako" id="saisenbako" type="button">
+          <span class="coin" id="coin" aria-hidden="true"></span>
+          <svg viewBox="0 0 300 170" aria-hidden="true">
+            <path class="box-side" d="M18 44 L282 44 L266 162 L34 162 Z" />
+            <rect class="box-top" x="10" y="26" width="280" height="20" rx="3" />
+            <g class="koushi">
+              <rect x="40" y="28" width="9" height="16" rx="2" />
+              <rect x="63" y="28" width="9" height="16" rx="2" />
+              <rect x="86" y="28" width="9" height="16" rx="2" />
+              <rect x="109" y="28" width="9" height="16" rx="2" />
+              <rect x="132" y="28" width="9" height="16" rx="2" />
+              <rect x="155" y="28" width="9" height="16" rx="2" />
+              <rect x="178" y="28" width="9" height="16" rx="2" />
+              <rect x="201" y="28" width="9" height="16" rx="2" />
+              <rect x="224" y="28" width="9" height="16" rx="2" />
+              <rect x="247" y="28" width="9" height="16" rx="2" />
+            </g>
+            <rect class="box-band" x="30" y="88" width="240" height="8" />
+          </svg>
+          <span class="visually-hidden">五円を投じる</span>
+        </button>
+      </div>
+
+      <div class="saisen__after" id="saisen-after" hidden>
+        <img class="orei" src="images/mayo/04-love.png" loading="lazy" width="480" height="415"
+          alt="LOVE の文字を掲げる赤實之命" />
+        <p class="lead">御縁がありました。</p>
+        <!-- ディレクトリ指定だと file:// で開いた時に index.html が開かれないため、明示する -->
+        <a class="torii-link" href="payment/index.html">奉納の手続きへ</a>
+        <p class="note note--dim">※ 当社の賽銭箱は、実在の口座に通じています。</p>
+      </div>
+    </section>
+
+    <!-- ─────────────── 御朱印 ─────────────── -->
+    <section class="section" id="goshuin">
+      <h2 class="midashi reveal">御朱印</h2>
+
+      <div class="shuin reveal">
+        <div class="shuin__paper">
+          <p class="shuin__sha">和合神社</p>
+          <p class="shuin__date" id="shuin-date">—</p>
+          <dl class="shuin__rec">
+            <div><dt>来社</dt><dd><span id="rec-visit">0</span> 度</dd></div>
+            <div><dt>参拝</dt><dd><span id="rec-worship">0</span> 度</dd></div>
+            <div><dt>献灯</dt><dd><span id="rec-light">0</span> 灯</dd></div>
+            <div><dt>道</dt><dd id="rec-michi">—</dd></div>
+            <div><dt>初参</dt><dd id="rec-first">—</dd></div>
+          </dl>
+          <span class="shuin__seal" aria-hidden="true">和合</span>
+        </div>
+      </div>
+
+      <p class="note note--dim reveal">記録はあなたの端末のなかにのみ残ります。</p>
+    </section>
+
+    <!-- ─────────────── 縁起 ─────────────── -->
+    <section class="section section--engi" id="engi">
+      <h2 class="midashi reveal">縁起</h2>
+
+      <div class="engi reveal">
+        <div class="engi__body">
+          <p>むかし、卓上に二つの瓶があった。</p>
+          <p>一つは白く、卵と油より成る。名を白油之命という。<br />一つは赤く、陽に灼かれた実より成る。名を赤實之命という。</p>
+          <p>二柱は長らく、互いを知らぬまま隣に在った。<br />白は白のまま、赤は赤のまま、それぞれの皿へ落ちていた。</p>
+          <p>ある夜、誰かの手が二つの瓶を同時に傾けた。<br />白と赤は皿の上で出会い、境を失い、<br />どちらでもない一つの色になった。</p>
+          <p>それは白でも赤でもなく、<br />また、白でも赤でもあった。</p>
+          <p>以来この地では、混ざることを畏れとともに敬い、<br />二柱を合わせて和合大神と称し、これを祀る。</p>
+          <p>二柱は、いまも手を離していない。</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p class="footer__sha">和合神社</p>
+    <p class="footer__note">二柱一体</p>
+  </footer>
+
+  <button class="sound-toggle" id="sound-toggle" type="button" aria-pressed="false">
+    <span class="sound-toggle__icon" aria-hidden="true"></span>
+    <span class="sound-toggle__text">音 なし</span>
+  </button>
+
+  <script src="assets/shrine.js"></script>
+</body>
 
 </html>
