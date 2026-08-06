@@ -508,15 +508,40 @@
     var furiCount = 0, hakuCount = 0;
     var complete = false;
 
+    /* 二振り目の click は神器から舞台へ上がってくる。その時には作法が
+       すでに拍へ進んでいるので、放っておくと同じ一回が一拍目に化ける。
+       神器が処理した click に印をつけ、舞台では拾わせない。 */
+    var CONSUMED = '__wagouHandled';
+    function consume(e) { if (e) e[CONSUMED] = true; }
+    function consumed(e) { return !!(e && e[CONSUMED]); }
+
+    /* 加えて、進んだ直後のごく短い間は受け付けない。
+       取りこぼしを防ぐのは上の印のほうで、こちらは二度押しの跳ねを吸うだけ。
+       意図した二回目を弾かないよう短くしておく */
+    var STEP_WAIT = 120;
+    var lockUntil = 0;
+
+    function accepting() { return performance.now() >= lockUntil; }
+
     function dots(name) { return $$('.sahou__dots i', steps[name]); }
 
     function setStep(next) {
       step = next;
+      lockUntil = performance.now() + STEP_WAIT;
+
       ['furi', 'haku', 'tare'].forEach(function (k) {
         if (!steps[k]) return;
         steps[k].classList.toggle('is-active', k === step);
       });
-      if (guide) guide.textContent = GUIDE[step] || '';
+
+      if (guide) {
+        guide.textContent = GUIDE[step] || '';
+        /* 次の作法が届いたことを、文字の現れ方で示す */
+        guide.classList.remove('is-fresh');
+        void guide.offsetWidth;
+        guide.classList.add('is-fresh');
+      }
+
       jingi.setAttribute('aria-label',
         step === 'furi' ? '神器を振る' :
         step === 'haku' ? '拍つ' :
@@ -529,7 +554,7 @@
 
     /* 一、振る */
     function furi() {
-      if (step !== 'furi' || furiCount >= 2) return;
+      if (step !== 'furi' || furiCount >= 2 || !accepting()) return;
       furiCount++;
       var d = dots('furi')[furiCount - 1];
       if (d) d.classList.add('on');
@@ -542,7 +567,7 @@
 
     /* 二、拍つ */
     function haku(x, y) {
-      if (step !== 'haku' || hakuCount >= 2) return;
+      if (step !== 'haku' || hakuCount >= 2 || !accepting()) return;
       hakuCount++;
       var d = dots('haku')[hakuCount - 1];
       if (d) d.classList.add('on');
@@ -579,7 +604,7 @@
     }
 
     function tareBegin() {
-      if (step !== 'tare' || holding || complete) return;
+      if (step !== 'tare' || holding || complete || !accepting()) return;
       holding = true;
       t0 = performance.now();
       jingi.classList.add('is-tilting');
@@ -653,11 +678,12 @@
     });
     jingi.addEventListener('pointercancel', function () { tareCancel(); endDrag(); });
 
-    /* 引かずに押しただけの時、および鍵盤からの操作 */
-    jingi.addEventListener('click', function () {
+    /* 引かずに押しただけの時、および鍵盤からの操作。
+       神器で受けた click は、舞台の拍手に回さない */
+    jingi.addEventListener('click', function (e) {
       if (step === 'tare') return;
-      if (didDrag) { didDrag = false; return; }
-      if (step === 'furi') furi();
+      if (didDrag) { didDrag = false; consume(e); return; }
+      if (step === 'furi') { furi(); consume(e); }
     });
 
     jingi.addEventListener('keydown', function (e) {
@@ -671,9 +697,9 @@
       if (e.key === 'Enter' || e.key === ' ') tareCancel();
     });
 
-    /* 拍手は舞台のどこでも受ける */
+    /* 拍手は舞台のどこでも受ける。ただし神器が処理済みの click は除く */
     stage.addEventListener('click', function (e) {
-      if (step !== 'haku') return;
+      if (step !== 'haku' || consumed(e)) return;
       /* 鍵盤からの起動では座標を持たない。その時は舞台の中央に響かせる */
       if (e.detail > 0) haku(e.clientX, e.clientY); else haku();
     });
