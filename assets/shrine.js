@@ -355,13 +355,15 @@
       return;
     }
 
+    /* 画面の下寄りに引いた線を越えた灯籠から順に灯す。
+       見える端から一斉に点くのではなく、歩みに追いついてくるように見せる */
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
         if (!en.isIntersecting) return;
         en.target.classList.add('is-lit');
         io.unobserve(en.target);
       });
-    }, { threshold: 0.6 });
+    }, { threshold: 0, rootMargin: '-45% 0px -25% 0px' });
 
     lanterns.forEach(function (el) { io.observe(el); });
   })();

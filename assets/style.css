@@ -226,7 +226,7 @@ main { position: relative; z-index: 1; }
   margin-top: 8rem;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  row-gap: clamp(6rem, 16vh, 11rem);
+  row-gap: clamp(8rem, 24vh, 15rem);
   justify-items: center;
 }
 
@@ -246,9 +246,10 @@ main { position: relative; z-index: 1; }
   background-size: contain;
   background-position: center;
   /* 石灯籠 */
-  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 104'%3E%3Cg fill='%2318140f' stroke='%23453d31' stroke-width='1'%3E%3Ccircle cx='30' cy='7' r='3.6'/%3E%3Cpath d='M5 29 Q30 9 55 29 L48 33 L12 33 Z'/%3E%3Crect x='17' y='33' width='26' height='23' rx='1.5'/%3E%3Crect x='14' y='56' width='32' height='5' rx='1.5'/%3E%3Crect x='24.5' y='61' width='11' height='29'/%3E%3Cpath d='M13 90 L47 90 L51 104 L9 104 Z'/%3E%3C/g%3E%3C/svg%3E");
-  opacity: .5;
-  transition: opacity 2s var(--ease);
+  /* 石そのものは最初から見えていること。でないと「点いた」瞬間が読めない */
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 104'%3E%3Cg fill='%231d1812' stroke='%23796854' stroke-width='1.2'%3E%3Ccircle cx='30' cy='7' r='3.6'/%3E%3Cpath d='M5 29 Q30 9 55 29 L48 33 L12 33 Z'/%3E%3Crect x='17' y='33' width='26' height='23' rx='1.5'/%3E%3Crect x='14' y='56' width='32' height='5' rx='1.5'/%3E%3Crect x='24.5' y='61' width='11' height='29'/%3E%3Cpath d='M13 90 L47 90 L51 104 L9 104 Z'/%3E%3C/g%3E%3C/svg%3E");
+  opacity: .72;
+  transition: opacity 1s var(--ease);
 }
 
 .lantern--l { grid-column: 1; }
@@ -282,8 +283,33 @@ main { position: relative; z-index: 1; }
 }
 
 .lantern.is-lit { opacity: 1; }
-.lantern.is-lit::before { opacity: 1; animation: flicker 3.7s ease-in-out infinite; }
-.lantern.is-lit::after  { opacity: 1; animation: flicker 5.1s ease-in-out infinite; }
+
+/* 点火は一瞬の出来事にする。ふわりと現れるのではなく、ぱっと燃え立つ */
+.lantern.is-lit::before {
+  animation: ignite .5s var(--ease) forwards,
+             flicker 3.7s ease-in-out .5s infinite;
+}
+
+.lantern.is-lit::after {
+  animation: glow-in .9s var(--ease) forwards,
+             flicker 5.1s ease-in-out .9s infinite;
+}
+
+/* 左右で少しずらし、一斉に点いたように見せない */
+.lantern--r.is-lit::before { animation-delay: .24s, .74s; }
+.lantern--r.is-lit::after  { animation-delay: .24s, 1.14s; }
+
+@keyframes ignite {
+  0%   { opacity: 0;   transform: scale(.2); }
+  38%  { opacity: 1;   transform: scale(1.7); }
+  68%  { opacity: .85; transform: scale(.9); }
+  100% { opacity: 1;   transform: scale(1); }
+}
+
+@keyframes glow-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
 
 @keyframes flicker {
   0%, 100% { opacity: 1; }
@@ -680,6 +706,14 @@ main { position: relative; z-index: 1; }
 }
 
 .pool.is-spread { width: 108px; height: 26px; opacity: .92; }
+
+/* 作法が進んだ合図。文字が改まって現れる */
+.ritual__guide.is-fresh { animation: guide-in .6s var(--ease); }
+
+@keyframes guide-in {
+  from { opacity: 0; transform: translateY(5px); }
+  to   { opacity: 1; transform: none; }
+}
 
 .ritual__guide {
   margin: 0;
